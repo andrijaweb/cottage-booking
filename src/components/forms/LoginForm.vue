@@ -1,0 +1,80 @@
+<script setup lang="ts">
+import { ref, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { login } from '@/services/auth'
+import useAppNavigation from '@/composables/useAppNavigation'
+import { loginSchema } from '@/lib/schemas/login'
+
+const props = defineProps<{
+  class?: HTMLAttributes['class']
+}>()
+
+const { router } = useAppNavigation()
+
+const loginUser = ref<{ email: string; password: string }>({
+  email: '',
+  password: '',
+})
+
+const handleSubmit = async () => {
+  const user = loginSchema.safeParse(loginUser.value)
+
+  if (!user.success) return
+
+  const response = await login({ email: user.data.email, password: user.data.password })
+  if (response) {
+    router.push({ name: 'home' })
+  }
+
+  loginUser.value.email = ''
+  loginUser.value.password = ''
+}
+</script>
+
+<template>
+  <div :class="cn('space-y-4 w-full max-w-xl mx-auto', props.class)">
+    <Card>
+      <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription> Enter your email below to login to your account </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form @submit.prevent="handleSubmit">
+          <div class="flex flex-col gap-6">
+            <div class="grid gap-3">
+              <Label for="email">Email</Label>
+              <Input
+                v-model="loginUser.email"
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div class="grid gap-3">
+              <div class="flex items-center">
+                <Label for="password">Password</Label>
+                <a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                  Forgot your password?
+                </a>
+              </div>
+              <Input v-model="loginUser.password" id="password" type="password" required />
+            </div>
+            <div class="flex flex-col gap-3">
+              <Button type="submit" class="w-full"> Login </Button>
+              <Button variant="outline" class="w-full"> Login with Google </Button>
+            </div>
+          </div>
+          <div class="mt-4 text-center text-sm">
+            Don't have an account?
+            <RouterLink to="/signup" class="underline underline-offset-4"> Sign up </RouterLink>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  </div>
+</template>
