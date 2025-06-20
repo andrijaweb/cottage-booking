@@ -1,6 +1,7 @@
 import { account, appwriteConfig, databases } from '@/lib/appwrite'
 import { ID } from 'appwrite'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function signup(user: any) {
   try {
     const newAccount = await account.create(ID.unique(), user.email, user.password, user.name)
@@ -11,7 +12,11 @@ export async function signup(user: any) {
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
-      user,
+      {
+        id: newAccount.$id,
+        email: user.email,
+        name: user.name,
+      },
     )
 
     return newUser
