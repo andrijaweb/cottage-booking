@@ -28,6 +28,7 @@ export async function login({ email, password }: { email: string; password: stri
     return session
   } catch (error) {
     console.error('Error during login:', error)
+    throw error
   }
 }
 
@@ -48,4 +49,8 @@ export async function getUserSession() {
     console.log('Error getting user session:', error)
     return null
   }
+}
+
+export async function getAccount() {
+  return await account.get()
 }

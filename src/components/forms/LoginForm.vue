@@ -5,33 +5,48 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { login } from '@/services/auth'
+import { getAccount, login } from '@/services/auth'
 import useAppNavigation from '@/composables/useAppNavigation'
-import { loginSchema } from '@/lib/schemas/login'
+import { loginSchema, type LoginSchemaFormValues } from '@/lib/schemas/login'
+import { useUserStore } from '@/stores/useUserStore'
 
 const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const { router } = useAppNavigation()
+const { router, toast } = useAppNavigation()
+const userStore = useUserStore()
 
-const loginUser = ref<{ email: string; password: string }>({
+const isLoading = ref(false)
+const loginUser = ref<LoginSchemaFormValues>({
   email: '',
   password: '',
 })
 
 const handleSubmit = async () => {
-  const user = loginSchema.safeParse(loginUser.value)
-
-  if (!user.success) return
-
-  const response = await login({ email: user.data.email, password: user.data.password })
-  if (response) {
-    router.push({ name: 'home' })
+  const result = loginSchema.safeParse(loginUser.value)
+  if (!result.success) {
+    toast.error('Invalid credentials.')
+    return
   }
 
-  loginUser.value.email = ''
-  loginUser.value.password = ''
+  isLoading.value = true
+  try {
+    await login({ email: result.data.email, password: result.data.password })
+
+    const user = await getAccount()
+    userStore.setCurrentUser(user)
+    router.push({ name: 'home' })
+    toast.success('Successfully logged in!')
+
+    loginUser.value.email = ''
+    loginUser.value.password = ''
+  } catch {
+    console.log('Error during login')
+    toast.error('Invalid credentials.')
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
@@ -52,7 +67,6 @@ const handleSubmit = async () => {
                 id="email"
                 type="email"
                 placeholder="m@example.com"
-                required
               />
             </div>
             <div class="grid gap-3">
@@ -62,12 +76,16 @@ const handleSubmit = async () => {
                   Forgot your password?
                 </a>
               </div>
-              <Input v-model="loginUser.password" id="password" type="password" required />
+              <Input v-model="loginUser.password" id="password" type="password" />
             </div>
-            <div class="flex flex-col gap-3">
-              <Button type="submit" class="w-full"> Login </Button>
-              <Button variant="outline" class="w-full"> Login with Google </Button>
-            </div>
+            <Button
+              type="submit"
+              class="w-full cursor-pointer"
+              :loading="isLoading"
+              :disabled="isLoading"
+            >
+              Login
+            </Button>
           </div>
           <div class="mt-4 text-center text-sm">
             Don't have an account?

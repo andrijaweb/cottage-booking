@@ -3,11 +3,13 @@ import type { HTMLAttributes } from 'vue'
 import { Primitive, type PrimitiveProps } from 'reka-ui'
 import { cn } from '@/lib/utils'
 import { type ButtonVariants, buttonVariants } from '.'
+import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue'
 
 interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant']
   size?: ButtonVariants['size']
   class?: HTMLAttributes['class']
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -22,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
     :as-child="asChild"
     :class="cn(buttonVariants({ variant, size }), props.class)"
   >
+    <LoadingSpinner v-if="loading" />
     <slot />
   </Primitive>
 </template>
