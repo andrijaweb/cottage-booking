@@ -3,7 +3,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <nav className="z-10 font-medium">
+  <nav className="z-10 font-medium hidden sm:block">
     <ul className="flex gap-10 items-center">
       <li>
         <RouterLink to="/about" className="hover:text-accent-400 transition-colors">
