@@ -1,11 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+
 /* @import "tw-animate-css"; */
 
 @custom-variant dark (&:is(.dark *));
 
 body {
-  @apply bg-neutral-900 text-neutral-100 antialiased;
+  @apply bg-neutral-900 text-neutral-100 antialiased font-montserrat;
 }
 
 @theme inline {
@@ -223,4 +224,9 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@theme {
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
 }
