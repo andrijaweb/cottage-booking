@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { Slider } from '@/components/ui/slider'
 import { Button } from '@/components/ui/button'
-import DateRangePicker from '@/components/ui/date-picker/DateRangePicker.vue'
 
 const modelValue = ref([0, 10000])
 </script>
@@ -29,7 +28,7 @@ const modelValue = ref([0, 10000])
 
     <div class="space-y-2.5">
       <h4 class="text-lg font-medium">Check-in / Check-out:</h4>
-      <DateRangePicker />
+      <!-- <DateRangePicker /> -->
     </div>
   </aside>
 </template>
