@@ -2,10 +2,31 @@
 import CottageCard from '@/components/molecules/CottageCard.vue'
 import FiltersSidebar from '@/components/organisms/FiltersSidebar.vue'
 import HeroSection from '@/components/organisms/HeroSection.vue'
+import { getCottages } from '@/services/cottages'
 import { useUserStore } from '@/stores/useUserStore'
+import { onMounted, ref } from 'vue'
 
 const { currentUser } = useUserStore()
 console.log('Current user: ', currentUser)
+
+const cottages = ref<any[]>([])
+const isLoading = ref(true)
+const error = ref<Error | null>(null)
+
+onMounted(async () => {
+  try {
+    const data = await getCottages()
+    console.log(data)
+    cottages.value = data
+  } catch (err) {
+    error.value = err as Error
+    console.error('Failed to fetch cottages:', err)
+  } finally {
+    isLoading.value = false
+  }
+})
+
+console.log('Cottages: ', cottages.value)
 </script>
 
 <template>
@@ -24,7 +45,7 @@ console.log('Current user: ', currentUser)
         <FiltersSidebar />
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <CottageCard v-for="n in 6" :key="n" />
+          <CottageCard v-for="cottage in cottages" :key="cottage.id" :cottage="cottage" />
         </div>
       </div>
     </div>
