@@ -6,7 +6,9 @@
         Your trusted platform for discovering and booking charming cottages in beautiful, serene
         locations. At CottageBooking, we believe in helping people reconnect with nature.
       </p>
-      <Button class="bg-yellow-500" size="lg">Explore Cottages</Button>
+      <Button class="bg-yellow-500" size="lg">
+        <RouterLink to="/"> Explore Cottages </RouterLink>
+      </Button>
     </div>
   </div>
 </template>
@@ -15,6 +17,7 @@
 import { computed } from 'vue'
 import bgImage from '@/assets/imgs/about-bg.jpg'
 import { Button } from '@/components/ui/button'
+import { RouterLink } from 'vue-router'
 
 const backgroundStyle = computed(() => ({
   background: `linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('${bgImage}')`,
