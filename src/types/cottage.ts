@@ -6,6 +6,7 @@ export type Cottage = Models.Document & {
   city: string
   country: string
   price: number
+  slug: string
   maxGuests: number
   bedrooms: number
   bathrooms: number
