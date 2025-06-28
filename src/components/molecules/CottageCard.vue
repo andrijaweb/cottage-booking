@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import useAppNavigation from '@/composables/useAppNavigation'
+import type { Cottage } from '@/types/cottage'
 
-defineProps<{ cottage: any }>()
+defineProps<{ cottage: Cottage }>()
 
 const { router } = useAppNavigation()
 
@@ -14,7 +15,7 @@ const handleCardClick = () => {
   <div class="group cursor-pointer" @click="handleCardClick">
     <div class="relative overflow-hidden rounded-2xl mb-6">
       <img
-        :src="cottage.images.at(0)"
+        :src="cottage.images?.length ? cottage.images[0] : undefined"
         :alt="cottage.name"
         class="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
       />

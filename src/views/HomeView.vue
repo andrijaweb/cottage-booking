@@ -4,18 +4,19 @@ import FiltersSidebar from '@/components/organisms/FiltersSidebar.vue'
 import HeroSection from '@/components/organisms/HeroSection.vue'
 import { getCottages } from '@/services/cottages'
 import { useUserStore } from '@/stores/useUserStore'
+import type { Cottage } from '@/types/cottage'
 import { onMounted, ref } from 'vue'
 
 const { currentUser } = useUserStore()
 console.log('Current user: ', currentUser)
 
-const cottages = ref<any[]>([])
+const cottages = ref<Cottage[] | null>(null)
 const isLoading = ref(true)
 const error = ref<Error | null>(null)
 
 onMounted(async () => {
   try {
-    const data = await getCottages()
+    const data = (await getCottages()) as Cottage[]
     console.log(data)
     cottages.value = data
   } catch (err) {
