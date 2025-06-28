@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LoadingSpinner from '@/components/atoms/LoadingSpinner.vue'
 import CottageCard from '@/components/molecules/CottageCard.vue'
 import FiltersSidebar from '@/components/organisms/FiltersSidebar.vue'
 import HeroSection from '@/components/organisms/HeroSection.vue'
@@ -46,7 +47,11 @@ console.log('Cottages: ', cottages.value)
         <FiltersSidebar />
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <CottageCard v-for="cottage in cottages" :key="cottage.id" :cottage="cottage" />
+          <div v-if="isLoading" class="flex items-center justify-center">
+            <LoadingSpinner class-name="size-10" />
+          </div>
+
+          <CottageCard v-else v-for="cottage in cottages" :key="cottage.id" :cottage="cottage" />
         </div>
       </div>
     </div>
