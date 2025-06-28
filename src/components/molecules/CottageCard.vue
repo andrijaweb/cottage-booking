@@ -5,14 +5,10 @@ import type { Cottage } from '@/types/cottage'
 defineProps<{ cottage: Cottage }>()
 
 const { router } = useAppNavigation()
-
-const handleCardClick = () => {
-  router.push('/cottage/1')
-}
 </script>
 
 <template>
-  <div class="group cursor-pointer" @click="handleCardClick">
+  <div class="group cursor-pointer" @click="() => router.push(`/cottage/${cottage.slug}`)">
     <div class="relative overflow-hidden rounded-2xl mb-6">
       <img
         :src="cottage.images?.length ? cottage.images[0] : undefined"

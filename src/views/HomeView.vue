@@ -18,7 +18,6 @@ const error = ref<Error | null>(null)
 onMounted(async () => {
   try {
     const data = (await getCottages()) as Cottage[]
-    console.log(data)
     cottages.value = data
   } catch (err) {
     error.value = err as Error
@@ -27,8 +26,6 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
-
-console.log('Cottages: ', cottages.value)
 </script>
 
 <template>
