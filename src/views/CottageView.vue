@@ -31,7 +31,6 @@ const error = ref<Error | null>(null)
 onMounted(async () => {
   try {
     const data = await getCottageBySlug(route.params.slug as string)
-    console.log(data)
     cottage.value = data
   } catch (err) {
     error.value = err as Error

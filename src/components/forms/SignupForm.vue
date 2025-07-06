@@ -37,7 +37,6 @@ const handleSubmit = async () => {
   const result = signupSchema.safeParse(formFields.value)
   if (!result.success) {
     const flattened = z.flattenError(result.error)
-    console.log(flattened)
     errors.value = flattened.fieldErrors
     toast.error('Invalid credentials.')
     return

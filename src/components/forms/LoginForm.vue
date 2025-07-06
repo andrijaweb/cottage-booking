@@ -42,7 +42,6 @@ const handleSubmit = async () => {
     loginUser.value.email = ''
     loginUser.value.password = ''
   } catch {
-    console.log('Error during login')
     toast.error('Invalid credentials.')
   } finally {
     isLoading.value = false
